@@ -5,7 +5,7 @@ export function RoomCard(room) {
             <h3>Room ${room.roomNumber}</h3>
             <p>Type: ${room.type}</p>
             <p>Price: $${room.basePrice}</p>
-            <button ${!isAvailable ? "disabled" : ""}>Book Now</button>
+            <button class="book-btn" data-id="${room.id}" ${!isAvailable ? "disabled" : ""}>Book Now</button>
         </div>
     `;
 }
