@@ -31,6 +31,6 @@ export let state = { ...initialState };
 
 export const updateState = (newState) => {
   state = { ...state, ...newState };
-  // Trigger a re-render (Student will implement this in main.js)
+
   window.dispatchEvent(new CustomEvent("stateChange"));
 };
