@@ -95,10 +95,48 @@ function submitBooking(event) {
 bookingForm.addEventListener("submit", submitBooking);
 cancelBtn.addEventListener("click", closeModal);
 
+function handleCheckout(roomId) {
+  const bookingIndex = state.bookings.findIndex(
+    (booking) => booking.roomId === roomId,
+  );
+
+  if (bookingIndex === -1) {
+    alert("Error: No active booking found for this room");
+    return;
+  }
+
+  const booking = state.bookings[bookingIndex];
+
+  const receipt = `Guest: ${booking.guestName} | Stay: ${booking.nights} night(s) | Total: $${booking.totalPrice}. Thank you!`;
+  alert(receipt);
+
+  const roomIndex = state.rooms.findIndex((room) => room.id === roomId);
+  if (roomIndex !== -1) {
+    state.rooms[roomIndex].status = "AVAILABLE";
+  }
+
+  state.bookings.splice(bookingIndex, 1);
+
+  // Update state and re-render
+  updateState({
+    rooms: state.rooms,
+    bookings: state.bookings,
+  });
+
+  console.log(
+    `Checkout completed: ${booking.guestName} from Room ${booking.roomNumber}`,
+  );
+}
+
 // Event Delegation for opening modal on "Book Now" click
 document.getElementById("room-grid").addEventListener("click", (event) => {
   if (event.target.classList.contains("book-btn")) {
     const roomId = event.target.getAttribute("data-id");
     openModal(roomId);
+  }
+
+  if (event.target.classList.contains("checkout-btn")) {
+    const roomId = event.target.getAttribute("data-id");
+    handleCheckout(roomId);
   }
 });
